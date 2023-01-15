@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/10 04:55:11 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:21:08 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*join_strings(char *dst, char *src)
 	char	*new_string;
 	char	*p;
 
+	if (!dst || !src)
+		return (NULL);
 	dst_len = get_length(dst);
 	src_len = get_length(src);
 	new_string = malloc(dst_len + src_len + 1);

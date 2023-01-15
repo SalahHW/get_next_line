@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:51:55 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/10 04:07:03 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:27:54 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@
 
 char	*get_next_line(int fd);
 char	*join_strings(char *dst, char *src);
+int		get_length(char *str);
 #endif

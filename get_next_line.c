@@ -6,28 +6,37 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/10 06:33:17 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/10 14:24:58 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdlib.h>
 
 char	*get_next_line(int fd)
 {
 	int		read_state;
-	char	*text;
+	char	*buffer;
 	char	*line_str;
 
-	text = malloc(sizeof(char) * BUFFER_SIZE);
-	line_str = malloc(sizeof(char) * BUFFER_SIZE);
-	if (!text || !line_str)
+	if (fd < 0)
 		return (NULL);
-	read_state = 1;
-	while (read_state != 0)
+	buffer = malloc(sizeof(char) * BUFFER_SIZE);
+	if (!buffer)
+		return (NULL);
+	read_state = read(fd, buffer, BUFFER_SIZE);
+	if (read_state < 0)
 	{
-		read_state = read(fd, text, BUFFER_SIZE);
-		if (read_state != 0)
-			line_str = join_strings(line_str, text);
+		free(buffer);
+		return (NULL);
 	}
+	if (read_state > 0)
+		line_str = malloc(sizeof(char) * read_state + 1);
+	while (read_state > 0)
+	{
+		line_str = join_strings(line_str, buffer);
+		read_state = read(fd, buffer, BUFFER_SIZE);
+	}
+	free(buffer);
 	return (line_str);
 }
