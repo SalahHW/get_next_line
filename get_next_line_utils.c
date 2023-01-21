@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/10 12:21:08 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:48:02 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ int	get_length(char *str)
 {
 	int	i;
 
+	if (!str)
+		return (0);
 	i = 0;
-	while (str[i])
+	while (str[i] != '\0')
 		i++;
 	return (i);
 }
@@ -29,8 +31,6 @@ char	*join_strings(char *dst, char *src)
 	char	*new_string;
 	char	*p;
 
-	if (!dst || !src)
-		return (NULL);
 	dst_len = get_length(dst);
 	src_len = get_length(src);
 	new_string = malloc(dst_len + src_len + 1);
@@ -43,4 +43,20 @@ char	*join_strings(char *dst, char *src)
 		*p++ = *src++;
 	*p = '\0';
 	return (new_string);
+}
+
+char	*find_cr(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\n')
+		{
+			return ((char *)s + i);
+		}
+		i++;
+	}
+	return (NULL);
 }
