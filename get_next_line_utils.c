@@ -6,40 +6,44 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/21 01:48:02 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:53:53 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	get_length(char *str)
+size_t	ft_strlen(const char *s)
 {
-	int	i;
+	size_t	i;
 
-	if (!str)
-		return (0);
 	i = 0;
-	while (str[i] != '\0')
+	if (!s)
+		return (0);
+	while (s[i])
+	{
 		i++;
+	}
 	return (i);
 }
 
-char	*join_strings(char *dst, char *src)
+char	*join_strings(char *dst, char *src, int src_len)
 {
 	int		dst_len;
-	int		src_len;
+	int 	i;
 	char	*new_string;
 	char	*p;
 
-	dst_len = get_length(dst);
-	src_len = get_length(src);
+	i = 0;
+	if (!dst || !src)
+		return (NULL);
+	dst_len = ft_strlen(dst);
 	new_string = malloc(dst_len + src_len + 1);
 	if (!new_string)
 		return (NULL);
 	p = new_string;
 	while (*dst)
 		*p++ = *dst++;
-	while (*src)
+	while (i++ < src_len)
 		*p++ = *src++;
 	*p = '\0';
 	return (new_string);
@@ -50,6 +54,8 @@ char	*find_cr(const char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == '\n')
@@ -59,4 +65,16 @@ char	*find_cr(const char *s)
 		i++;
 	}
 	return (NULL);
+}
+
+int	ft_free_str(char *str)
+{
+	if (str)
+	{
+		free(str);
+		str = NULL;
+		return (1);
+	}
+	else
+		return (0);
 }

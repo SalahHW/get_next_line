@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 19:08:10 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/21 16:34:53 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/23 19:08:13 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@ int	main(void)
 {
 	int	fd;
 
-	fd = open("textfiles/1char.txt", O_RDONLY);
+	fd = open("textfiles/only_nl.txt", O_RDONLY);
 	if (fd >= 0)
 	{
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
-		printf("%s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
+		printf("- %s", get_next_line(fd));
 		close(fd);
 	}
 	else

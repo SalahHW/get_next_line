@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/21 16:41:59 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:48:33 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,33 @@ char	*get_next_line(int fd)
 	char		buffer[BUFFER_SIZE + 1];
 	int			read_state;
 
+	line = NULL;
 	if (fd >= 0 && BUFFER_SIZE > 0)
 	{
 		read_state = 1;
 		while (read_state > 0)
 		{
-			read_state = read(fd, buffer, BUFFER_SIZE);
-			if (read_state == 0)
-			{
-				return (NULL);
-			}
-			if (!stash)
-				stash = malloc(sizeof(char) * read_state + 1);
-			stash = join_strings(stash, buffer);
 			if (find_cr(stash))
 			{
 				line = extract_line(stash);
-				stash = keep_remainder(stash);
+				stash = keep_remainder(stash) + (0 * ft_free_str(stash));
 				return (line);
 			}
+			read_state = read(fd, buffer, BUFFER_SIZE);
+			if (read_state <= 0)
+			{
+				if (stash && stash[0])
+					line = keep_remainder(stash) + (0 * ft_free_str(stash));
+				stash = NULL;
+				return (line);
+			}
+			if (!stash && buffer[0])
+			{
+				stash = malloc(sizeof(char) * read_state + 1);
+				stash[0] = '\0';
+			}
+
+			stash = join_strings(stash, buffer, read_state) + (0 * ft_free_str(stash));
 		}
 	}
 	return (NULL);
@@ -52,7 +60,9 @@ char	*extract_line(char *str)
 	i = 0;
 	while (str[i] != '\n')
 		i++;
-	line = malloc(sizeof(char) * i + 1);
+	line = malloc(sizeof(char) * i + 2);
+	if (!line)
+		return (NULL);
 	i = 0;
 	while (str[i] != '\n')
 	{
@@ -70,18 +80,22 @@ char	*keep_remainder(char *str)
 	int		i;
 
 	i = 0;
-	str = find_cr(str);
-	str++;
-	while (str[i])
+	if (find_cr(str))
 	{
-		i++;
+		str = find_cr(str);
+		str++;
 	}
+	while (str[i])
+		i++;
 	new_stash = malloc(sizeof(char) * i + 1);
+	if (!new_stash)
+		return (NULL);
 	i = 0;
 	while (str[i])
 	{
 		new_stash[i] = str[i];
 		i++;
 	}
+	new_stash[i] = '\0';
 	return (new_stash);
 }
