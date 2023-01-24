@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 19:08:10 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/23 19:08:13 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:02:16 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,22 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 int	main(void)
 {
 	int	fd;
+	char *toto;
 
-	fd = open("textfiles/only_nl.txt", O_RDONLY);
-	if (fd >= 0)
+	fd = open("textfiles/test.txt", O_RDONLY);
+	toto = get_next_line(fd);
+	while (toto)
 	{
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		printf("- %s", get_next_line(fd));
-		close(fd);
-	}
-	else
-	{
-		printf("%s\n", strerror(errno));
+		printf("%s", toto);
+		free(toto);
+		toto = get_next_line(fd);
 	}
 	return (0);
 }

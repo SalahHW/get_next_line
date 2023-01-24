@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/24 15:48:33 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:16:05 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*get_next_line(int fd)
 {
 	static char	*stash;
 	char		*line;
-	char		buffer[BUFFER_SIZE + 1];
+	char		buffer[BUFFER_SIZE];
 	int			read_state;
 
 	line = NULL;
@@ -80,6 +80,7 @@ char	*keep_remainder(char *str)
 	int		i;
 
 	i = 0;
+	new_stash = 0;
 	if (find_cr(str))
 	{
 		str = find_cr(str);
@@ -87,7 +88,8 @@ char	*keep_remainder(char *str)
 	}
 	while (str[i])
 		i++;
-	new_stash = malloc(sizeof(char) * i + 1);
+	if (i > 0)
+		new_stash = malloc(sizeof(char) * i + 1);
 	if (!new_stash)
 		return (NULL);
 	i = 0;
