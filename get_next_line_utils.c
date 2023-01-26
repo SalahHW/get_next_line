@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/26 14:15:05 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:05:18 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t	ft_strlen(const char *s)
 char	*join_strings(char *dst, char *src, int src_len)
 {
 	int		dst_len;
-	int 	i;
+	int		i;
 	char	*new_string;
 	char	*p;
 
@@ -46,7 +46,6 @@ char	*join_strings(char *dst, char *src, int src_len)
 	while (i++ < src_len)
 		*p++ = *src++;
 	*p = '\0';
-	ft_free_str(dst);
 	return (new_string);
 }
 
@@ -74,8 +73,8 @@ int	ft_free_str(char *str)
 	{
 		free(str);
 		str = NULL;
-		return (1);
+		return (0);
 	}
 	else
-		return (0);
+		return (1);
 }
