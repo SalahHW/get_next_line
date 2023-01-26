@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/26 14:14:18 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:21:36 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*get_next_line(int fd)
 				stash = keep_remainder(stash) + (0 * ft_free_str(stash));
 				return (line);
 			}
+			
 			read_state = read(fd, buffer, BUFFER_SIZE);
 			if (read_state < 0)
 			{
@@ -53,7 +54,7 @@ char	*get_next_line(int fd)
 					return (NULL);
 				stash[0] = '\0';
 			}
-			stash = join_strings(stash, buffer, read_state);
+			stash = join_strings(stash, buffer, read_state) + (0 * ft_free_str(stash));
 		}
 	}
 	return (NULL);
