@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:51:55 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/25 01:29:29 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/05 03:18:08 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*join_strings(char *dst, char *src, int src_len);
+char	*join_strings(char **dst, char *src);
 char	*find_cr(const char *str);
 char	*extract_line(char *str);
-char	*keep_remainder(char *str);
+char	*keep_remainder(char **str);
 size_t	ft_strlen(const char *str);
-int		ft_free_str(char *str);
+int		ft_free_str(char **str);
 #endif

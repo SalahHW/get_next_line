@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/26 18:05:18 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/05 03:18:49 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,29 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*join_strings(char *dst, char *src, int src_len)
+char	*join_strings(char **dst, char *src)
 {
 	int		dst_len;
-	int		i;
+	int		src_len;
 	char	*new_string;
 	char	*p;
+	char	*dst_ptr;
 
-	i = 0;
 	if (!dst || !src)
 		return (NULL);
-	dst_len = ft_strlen(dst);
+	dst_len = ft_strlen(*dst);
+	src_len = ft_strlen(src);
 	new_string = malloc(dst_len + src_len + 1);
 	if (!new_string)
 		return (NULL);
 	p = new_string;
-	while (*dst)
-		*p++ = *dst++;
-	while (i++ < src_len)
+	dst_ptr = *dst;
+	while (*dst_ptr)
+		*p++ = *dst_ptr++;
+	while (*src)
 		*p++ = *src++;
 	*p = '\0';
+	free(*dst);
 	return (new_string);
 }
 
@@ -67,14 +70,13 @@ char	*find_cr(const char *s)
 	return (NULL);
 }
 
-int	ft_free_str(char *str)
+int	ft_free_str(char **str)
 {
-	if (str)
+	if (*str)
 	{
-		free(str);
-		str = NULL;
+		free(*str);
+		*str = NULL;
 		return (0);
 	}
-	else
-		return (1);
+	return (1);
 }

@@ -6,18 +6,17 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/01/26 18:07:21 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/05 03:24:16 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
 	char		*line;
-	char		buffer[BUFFER_SIZE];
+	char		buffer[BUFFER_SIZE + 1];
 	int			read_state;
 
 	line = NULL;
@@ -26,23 +25,24 @@ char	*get_next_line(int fd)
 		read_state = 1;
 		while (read_state > 0)
 		{
-			if (find_cr(stash))
+			while (find_cr(stash))
 			{
 				line = extract_line(stash);
-				stash = keep_remainder(stash) + (0 * ft_free_str(stash));
+				stash = keep_remainder(&stash);
 				return (line);
 			}
 			read_state = read(fd, buffer, BUFFER_SIZE);
+			buffer[read_state] = '\0';
 			if (read_state < 0)
 			{
-				ft_free_str(stash);
+				ft_free_str(&stash);
 				stash = NULL;
 				return (NULL);
 			}
 			if (read_state == 0)
 			{
 				if (stash)
-					line = keep_remainder(stash) + (0 * ft_free_str(stash));
+					line = keep_remainder(&stash);
 				stash = NULL;
 				return (line);
 			}
@@ -53,8 +53,7 @@ char	*get_next_line(int fd)
 					return (NULL);
 				stash[0] = '\0';
 			}
-			stash = join_strings(stash, buffer, read_state)
-				+ ft_free_str(stash);
+			stash = join_strings(&stash, buffer);
 		}
 	}
 	return (NULL);
@@ -82,30 +81,31 @@ char	*extract_line(char *str)
 	return (line);
 }
 
-char	*keep_remainder(char *str)
+char	*keep_remainder(char **stash)
 {
 	char	*new_stash;
+	char	*p;
 	int		i;
 
 	i = 0;
-	new_stash = NULL;
-	if (find_cr(str))
+	p = *stash;
+	if (find_cr(p))
 	{
-		str = find_cr(str);
-		str++;
+		p = find_cr(p);
+		p += 1;
 	}
-	while (str[i])
+	while (p[i])
 		i++;
-	if (i > 0)
-		new_stash = malloc(sizeof(char) * i + 1);
+	new_stash = malloc(sizeof(char) * i + 1);
 	if (!new_stash)
 		return (NULL);
 	i = 0;
-	while (str[i])
+	while (p[i])
 	{
-		new_stash[i] = str[i];
+		new_stash[i] = p[i];
 		i++;
 	}
 	new_stash[i] = '\0';
+	ft_free_str(stash);
 	return (new_stash);
 }
