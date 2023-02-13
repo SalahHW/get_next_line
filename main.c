@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 19:08:10 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/04 03:30:29 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:53:00 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(void)
 	int	fd;
 	char *toto;
 
-	fd = open("textfiles/only_nl.txt", O_RDONLY);
+	fd = open("textfiles/limits.txt", O_RDONLY);
 	toto = get_next_line(fd);
 	while (toto)
 	{
