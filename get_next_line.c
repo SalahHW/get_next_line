@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/13 17:14:44 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/13 17:51:15 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ char	*get_next_line(int fd)
 	int			read_state;
 
 	line = NULL;
+	if (read(fd, NULL, 0) == -1)
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
 	if (fd >= 0 && BUFFER_SIZE > 0)
 	{
 		read_state = 1;
@@ -28,6 +34,8 @@ char	*get_next_line(int fd)
 			while (find_cr(stash))
 			{
 				line = extract_line(stash);
+				if (!line)
+					return (ft_free_return(&stash));
 				stash = keep_remainder(&stash);
 				return (line);
 			}
@@ -103,7 +111,11 @@ char	*keep_remainder(char **stash)
 		i++;
 	new_stash = malloc(sizeof(char) * i + 1);
 	if (!new_stash)
+	{
+		free(*stash);
+		*stash = NULL;
 		return (NULL);
+	}
 	i = 0;
 	while (p[i])
 	{
