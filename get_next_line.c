@@ -6,11 +6,12 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/13 17:51:15 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/16 19:30:09 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "stdio.h"
 
 char	*get_next_line(int fd)
 {
@@ -20,12 +21,6 @@ char	*get_next_line(int fd)
 	int			read_state;
 
 	line = NULL;
-	if (read(fd, NULL, 0) == -1)
-	{
-		free(stash);
-		stash = NULL;
-		return (NULL);
-	}
 	if (fd >= 0 && BUFFER_SIZE > 0)
 	{
 		read_state = 1;
@@ -33,25 +28,17 @@ char	*get_next_line(int fd)
 		{
 			while (find_cr(stash))
 			{
-				line = extract_line(stash);
-				if (!line)
-					return (ft_free_return(&stash));
+				line = extract_line(&stash);
 				stash = keep_remainder(&stash);
 				return (line);
 			}
 			read_state = read(fd, buffer, BUFFER_SIZE);
 			if (read_state < 0)
 			{
-				ft_free_str(&stash);
+				ft_free(&stash);
 				return (NULL);
 			}
 			buffer[read_state] = '\0';
-			if (read_state < 0)
-			{
-				ft_free_str(&stash);
-				stash = NULL;
-				return (NULL);
-			}
 			if (read_state == 0)
 			{
 				if (stash)
@@ -72,25 +59,26 @@ char	*get_next_line(int fd)
 	return (NULL);
 }
 
-char	*extract_line(char *str)
+char	*extract_line(char **stash)
 {
 	char	*line;
-	int		i;
+	char	*line_ptr;
+	char	*stash_ptr;
 
-	i = 0;
-	while (str[i] != '\n')
-		i++;
-	line = malloc(sizeof(char) * i + 2);
+	line = NULL;
+	stash_ptr = *stash;
+	while (*stash_ptr != '\n')
+		stash_ptr++;
+	line = malloc(sizeof(char) * (stash_ptr - *stash + 2)); 
 	if (!line)
-		return (NULL);
-	i = 0;
-	while (str[i] != '\n')
-	{
-		line[i] = str[i];
-		i++;
-	}
-	line[i] = '\n';
-	line[i + 1] = '\0';
+		return (ft_free(stash));
+	if (*stash)
+		stash_ptr = *stash;
+	line_ptr = line;
+	while (*stash_ptr != '\n')
+		*line_ptr++ = *stash_ptr++;
+	*line_ptr = '\n';
+	*++line_ptr = '\0'; 
 	return (line);
 }
 
@@ -111,24 +99,14 @@ char	*keep_remainder(char **stash)
 		i++;
 	new_stash = malloc(sizeof(char) * i + 1);
 	if (!new_stash)
-	{
-		free(*stash);
-		*stash = NULL;
-		return (NULL);
-	}
+		return (ft_free(stash));
 	i = 0;
-	while (p[i])
-	{
-		new_stash[i] = p[i];
-		i++;
-	}
+	while (*p)
+		new_stash[i++] = *p++;
 	if (i == 0)
-	{
-		ft_free_str(&new_stash);
-		new_stash = NULL;
-	}
+		ft_free(&new_stash);
 	else
 		new_stash[i] = '\0';
-	ft_free_str(stash);
+	ft_free(stash);
 	return (new_stash);
 }
