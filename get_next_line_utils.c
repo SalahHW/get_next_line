@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/13 17:50:53 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/16 19:25:00 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,7 @@ char	*join_strings(char **dst, char *src)
 	src_len = ft_strlen(src);
 	new_string = malloc(dst_len + src_len + 1);
 	if (!new_string)
-	{
-		free(*dst);
-		*dst = NULL;
-		return (NULL);
-	}
+		return (ft_free(dst));
 	p = new_string;
 	dst_ptr = *dst;
 	while (*dst_ptr)
@@ -52,7 +48,7 @@ char	*join_strings(char **dst, char *src)
 	while (*src)
 		*p++ = *src++;
 	*p = '\0';
-	free(*dst);
+	ft_free(dst);
 	return (new_string);
 }
 
@@ -74,20 +70,9 @@ char	*find_cr(const char *s)
 	return (NULL);
 }
 
-int	ft_free_str(char **str)
+char	*ft_free(char **str)
 {
-	if (*str)
-	{
-		free(*str);
-		*str = NULL;
-		return (0);
-	}
-	return (1);
-}
-
-char	*ft_free_return(char **str)
-{
-	if (str)
+	if (str && *str)
 	{
 		free(*str);
 		*str = NULL;
