@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/16 19:30:09 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/17 16:12:38 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*extract_line(char **stash)
 	stash_ptr = *stash;
 	while (*stash_ptr != '\n')
 		stash_ptr++;
-	line = malloc(sizeof(char) * (stash_ptr - *stash + 2)); 
+	line = malloc((sizeof(char) * (stash_ptr - *stash)) + 2);
 	if (!line)
 		return (ft_free(stash));
 	if (*stash)
@@ -78,35 +78,36 @@ char	*extract_line(char **stash)
 	while (*stash_ptr != '\n')
 		*line_ptr++ = *stash_ptr++;
 	*line_ptr = '\n';
-	*++line_ptr = '\0'; 
+	*++line_ptr = '\0';
 	return (line);
 }
 
 char	*keep_remainder(char **stash)
 {
 	char	*new_stash;
-	char	*p;
-	int		i;
+	char	*stash_ptr;
+	char	*cr_ptr;
+	char	*new_stash_ptr;
 
-	i = 0;
-	p = *stash;
-	if (find_cr(p))
+	if (find_cr(*stash))
 	{
-		p = find_cr(p);
-		p += 1;
+		cr_ptr = find_cr(*stash);
+		stash_ptr = find_cr(*stash);
+		while (*stash_ptr)
+			stash_ptr++;
+		new_stash = malloc((sizeof(char) * (stash_ptr - cr_ptr)));
+		if (!new_stash)
+			return (ft_free(stash));
+		new_stash_ptr = new_stash;
+		stash_ptr = find_cr(*stash) + 1;
+		while (*stash_ptr)
+			*new_stash_ptr++ = *stash_ptr++;
+		*new_stash_ptr = '\0';
+		ft_free(stash);
+		return (new_stash);
 	}
-	while (p[i])
-		i++;
-	new_stash = malloc(sizeof(char) * i + 1);
-	if (!new_stash)
-		return (ft_free(stash));
-	i = 0;
-	while (*p)
-		new_stash[i++] = *p++;
-	if (i == 0)
-		ft_free(&new_stash);
 	else
-		new_stash[i] = '\0';
-	ft_free(stash);
-	return (new_stash);
+	{
+		return (*stash);
+	}
 }
