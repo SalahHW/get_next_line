@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/16 19:25:00 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/18 04:12:52 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,18 @@ char	*join_strings(char **dst, char *src)
 	return (new_string);
 }
 
-char	*find_cr(const char *s)
+char	*find_cr(char **str)
 {
-	int	i;
+	char	*str_ptr;
 
-	i = 0;
-	if (!s)
+	if (!str)
 		return (NULL);
-	while (s[i])
+	str_ptr = *str;
+	while (*str_ptr)
 	{
-		if (s[i] == '\n')
-		{
-			return ((char *)s + i);
-		}
-		i++;
+		if (*str_ptr == '\n')
+			return (str_ptr);
+		str_ptr++;
 	}
 	return (NULL);
 }
