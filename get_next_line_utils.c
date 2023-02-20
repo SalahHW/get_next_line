@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/18 04:12:52 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/20 09:18:25 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*find_cr(char **str)
 {
 	char	*str_ptr;
 
-	if (!str)
+	if (!*str)
 		return (NULL);
 	str_ptr = *str;
 	while (*str_ptr)
