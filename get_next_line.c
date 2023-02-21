@@ -6,58 +6,50 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/20 11:44:47 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/21 03:56:16 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "stdio.h"
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		buffer[BUFFER_SIZE + 1];
-	int			read_state;
+	char		*line;
 
-	if (fd < 0 && BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!*stash && !find_cr(&stash))
+		stash = read_file(fd, &stash);
+	if (!*stash)
+		return (NULL);
+	line = extract_line(&stash);
+	stash = keep_remainder(&stash);
+	return (line);
+}
+
+char	*read_file(int fd, char **stash)
+{
+	char buffer[BUFFER_SIZE + 1];
+	int	read_state;
+
 	read_state = 1;
-	if (find_cr(&stash))
-		return (read_stash(&stash));
-	while (read_state > 0 && !find_cr(&stash))
+	while (read_state > 0)
 	{
 		read_state = read(fd, buffer, BUFFER_SIZE);
 		if (read_state < 0)
-			return (ft_free(&stash));
-		buffer[read_state] = '\0';
-		if (read_state == 0)
 			return (NULL);
-		if (!stash && *buffer)
+		buffer[read_state] = '\0';
+		if (!*stash)
 		{
-			stash = malloc(sizeof(char) * read_state + 1);
-			if (!stash)
-				return (NULL);
-			stash[0] = '\0';
+			*stash = malloc(sizeof(char) * read_state + 1);
+			**stash = '\0';
 		}
-		stash = join_strings(&stash, buffer);
+		*stash = join_strings(stash, buffer);
+		if (find_cr(stash))
+			break;
 	}
-	return (read_stash(&stash));
-}
-
-char	*read_stash(char **stash)
-{
-	char *line;
-
-	if (!*stash)
-		return (NULL);
-	if (find_cr(stash))
-	{
-		line = extract_line(stash);
-		*stash = keep_remainder(stash);
-	}
-	else
-		return (*stash);
-	return (line);
+	return (*stash);
 }
 
 char	*extract_line(char **stash)
@@ -66,7 +58,6 @@ char	*extract_line(char **stash)
 	char	*line_ptr;
 	char	*stash_ptr;
 
-	line = NULL;
 	stash_ptr = *stash;
 	while (*stash_ptr != '\n')
 		stash_ptr++;
@@ -90,18 +81,21 @@ char	*keep_remainder(char **stash)
 	char	*cr_ptr;
 	char	*new_stash_ptr;
 
-	cr_ptr = find_cr(stash);
-	stash_ptr = find_cr(stash);
-	while (*stash_ptr)
-		stash_ptr++;
-	new_stash = malloc((sizeof(char) * (stash_ptr - cr_ptr)));
-	if (!new_stash)
-		return (ft_free(stash));
-	new_stash_ptr = new_stash;
-	stash_ptr = find_cr(stash) + 1;
-	while (*stash_ptr)
-		*new_stash_ptr++ = *stash_ptr++;
-	*new_stash_ptr = '\0';
+	if (find_cr(stash))
+	{
+		cr_ptr = find_cr(stash);
+		stash_ptr = find_cr(stash);
+		while (*stash_ptr)
+			stash_ptr++;
+		new_stash = malloc((sizeof(char) * (stash_ptr - cr_ptr)));
+		if (!new_stash)
+			return (ft_free(stash));
+		new_stash_ptr = new_stash;
+		stash_ptr = find_cr(stash) + 1;
+		while (*stash_ptr)
+			*new_stash_ptr++ = *stash_ptr++;
+		*new_stash_ptr = '\0';
+	}
 	ft_free(stash);
 	return (new_stash);
 }
