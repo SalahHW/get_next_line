@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/20 09:18:25 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:28:37 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*join_strings(char **dst, char *src)
 	char	*p;
 	char	*dst_ptr;
 
-	if (!dst || !src)
+	if (!*dst || !*src)
 		return (NULL);
 	dst_len = ft_strlen(*dst);
 	src_len = ft_strlen(src);

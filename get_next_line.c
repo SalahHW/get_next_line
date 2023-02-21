@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/21 03:56:16 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/21 19:11:31 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!*stash && !find_cr(&stash))
-		stash = read_file(fd, &stash);
-	if (!*stash)
+	stash = read_file(fd, &stash);
+	if (!stash)
 		return (NULL);
 	line = extract_line(&stash);
 	stash = keep_remainder(&stash);
@@ -40,12 +39,12 @@ char	*read_file(int fd, char **stash)
 		if (read_state < 0)
 			return (NULL);
 		buffer[read_state] = '\0';
-		if (!*stash)
+		if (!*stash && read_state > 0)
 		{
 			*stash = malloc(sizeof(char) * read_state + 1);
 			**stash = '\0';
+			*stash = join_strings(stash, buffer);
 		}
-		*stash = join_strings(stash, buffer);
 		if (find_cr(stash))
 			break;
 	}
@@ -81,6 +80,7 @@ char	*keep_remainder(char **stash)
 	char	*cr_ptr;
 	char	*new_stash_ptr;
 
+	new_stash = NULL;
 	if (find_cr(stash))
 	{
 		cr_ptr = find_cr(stash);
