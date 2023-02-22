@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/22 14:11:15 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/22 19:34:42 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,16 @@ char	*join_strings(char **dst, char *src)
 	char	*new_string;
 	char	*new_string_ptr;
 	char	*dst_ptr;
-	char	*src_ptr;
 
-	src_ptr = src;
-	dst_ptr = *dst;
-	while (*dst_ptr)
-		dst_ptr++;
-	while (*src_ptr)
-		src_ptr++;
-	new_string = malloc(sizeof(char) * ((src_ptr - src) + (dst_ptr - *dst) + 1));
-	if (!new_string)
-	{
-		ft_free(dst);
+	if (!dst || !src)
 		return (NULL);
-	}
+	new_string = malloc(ft_strlen(*dst) + ft_strlen(src) + 1);
+	if (!new_string)
+		return (ft_free(dst));
 	new_string_ptr = new_string;
 	dst_ptr = *dst;
+	while (*dst_ptr)
+		*new_string_ptr++ = *dst_ptr++;
 	while (*src)
 		*new_string_ptr++ = *src++;
 	*new_string_ptr = '\0';

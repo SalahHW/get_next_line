@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/21 22:24:32 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:22:52 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,26 +63,17 @@ char	*extract_line(char **stash)
 	char	*stash_ptr;
 
 	stash_ptr = *stash;
-	while (*stash_ptr != '\n' && *stash_ptr)
+	while (stash_ptr[-1] != '\n' && *stash_ptr)
 		stash_ptr++;
-	if (find_cr(stash))
-		line = malloc((sizeof(char) * (stash_ptr - *stash)) + 2);
-	else
-		line = malloc((sizeof(char) * (stash_ptr - *stash)) + 1);
+	line = malloc((sizeof(char) * (stash_ptr - *stash)) + 1);
 	if (!line)
 		return (ft_free(stash));
 	if (*stash)
 		stash_ptr = *stash;
 	line_ptr = line;
-	while (*stash_ptr != '\n' && *stash_ptr)
+	while (stash_ptr[-1] != '\n' && *stash_ptr)
 		*line_ptr++ = *stash_ptr++;
-	if (find_cr(stash))
-	{
-		*line_ptr = '\n';
-		*++line_ptr = '\0';
-	}
-	else
-		*line_ptr ='\0';
+	*line_ptr = '\0';
 	return (line);
 }
 
