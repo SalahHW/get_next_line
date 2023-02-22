@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/21 17:28:37 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/22 14:11:15 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,28 @@ size_t	ft_strlen(const char *s)
 
 char	*join_strings(char **dst, char *src)
 {
-	int		dst_len;
-	int		src_len;
 	char	*new_string;
-	char	*p;
+	char	*new_string_ptr;
 	char	*dst_ptr;
+	char	*src_ptr;
 
-	if (!*dst || !*src)
-		return (NULL);
-	dst_len = ft_strlen(*dst);
-	src_len = ft_strlen(src);
-	new_string = malloc(dst_len + src_len + 1);
-	if (!new_string)
-		return (ft_free(dst));
-	p = new_string;
+	src_ptr = src;
 	dst_ptr = *dst;
 	while (*dst_ptr)
-		*p++ = *dst_ptr++;
+		dst_ptr++;
+	while (*src_ptr)
+		src_ptr++;
+	new_string = malloc(sizeof(char) * ((src_ptr - src) + (dst_ptr - *dst) + 1));
+	if (!new_string)
+	{
+		ft_free(dst);
+		return (NULL);
+	}
+	new_string_ptr = new_string;
+	dst_ptr = *dst;
 	while (*src)
-		*p++ = *src++;
-	*p = '\0';
+		*new_string_ptr++ = *src++;
+	*new_string_ptr = '\0';
 	ft_free(dst);
 	return (new_string);
 }

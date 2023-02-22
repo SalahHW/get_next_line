@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/21 19:11:31 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/21 22:24:32 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,20 @@ char	*read_file(int fd, char **stash)
 	while (read_state > 0)
 	{
 		read_state = read(fd, buffer, BUFFER_SIZE);
-		if (read_state < 0)
+		if (read_state < 0 || (read_state == 0 && !*stash))
+		{
+			ft_free(stash);
 			return (NULL);
+		}
 		buffer[read_state] = '\0';
 		if (!*stash && read_state > 0)
 		{
 			*stash = malloc(sizeof(char) * read_state + 1);
+			if (!*stash)
+				return (NULL);
 			**stash = '\0';
-			*stash = join_strings(stash, buffer);
 		}
+		*stash = join_strings(stash, buffer);
 		if (find_cr(stash))
 			break;
 	}
@@ -58,18 +63,26 @@ char	*extract_line(char **stash)
 	char	*stash_ptr;
 
 	stash_ptr = *stash;
-	while (*stash_ptr != '\n')
+	while (*stash_ptr != '\n' && *stash_ptr)
 		stash_ptr++;
-	line = malloc((sizeof(char) * (stash_ptr - *stash)) + 2);
+	if (find_cr(stash))
+		line = malloc((sizeof(char) * (stash_ptr - *stash)) + 2);
+	else
+		line = malloc((sizeof(char) * (stash_ptr - *stash)) + 1);
 	if (!line)
 		return (ft_free(stash));
 	if (*stash)
 		stash_ptr = *stash;
 	line_ptr = line;
-	while (*stash_ptr != '\n')
+	while (*stash_ptr != '\n' && *stash_ptr)
 		*line_ptr++ = *stash_ptr++;
-	*line_ptr = '\n';
-	*++line_ptr = '\0';
+	if (find_cr(stash))
+	{
+		*line_ptr = '\n';
+		*++line_ptr = '\0';
+	}
+	else
+		*line_ptr ='\0';
 	return (line);
 }
 
@@ -87,7 +100,7 @@ char	*keep_remainder(char **stash)
 		stash_ptr = find_cr(stash);
 		while (*stash_ptr)
 			stash_ptr++;
-		new_stash = malloc((sizeof(char) * (stash_ptr - cr_ptr)));
+		new_stash = malloc((sizeof(char) * (stash_ptr - cr_ptr) + 1));
 		if (!new_stash)
 			return (ft_free(stash));
 		new_stash_ptr = new_stash;

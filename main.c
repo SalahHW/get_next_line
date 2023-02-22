@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 19:08:10 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/21 19:08:20 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/22 14:05:04 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ int	main(void)
 {
 	int	fd;
 	char *toto;
-
-	fd = open("./textfiles/1char.txt", O_RDONLY);
+	fd = open("./textfiles/lines_around_10.txt", O_RDONLY);
 	toto = get_next_line(fd);
 	while (toto)
 	{
-		printf("%s", toto);
+		printf("%p\n", toto);
 		free(toto);
 		toto = get_next_line(fd);
 	}
