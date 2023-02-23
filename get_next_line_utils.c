@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/22 19:34:42 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/23 20:52:58 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,27 @@ size_t	ft_strlen(const char *s)
 		i++;
 	}
 	return (i);
+}
+
+char	*ft_strdup(char **str)
+{
+	char	*new_string;
+	char	*new_string_ptr;
+	char	*str_ptr;
+
+	new_string = malloc(sizeof(char) * ft_strlen(*str) + 1);
+	if (!new_string)
+	{
+		ft_free(str);
+		return (NULL);
+	}
+	str_ptr = *str;
+	new_string_ptr = new_string;
+	while (*str_ptr)
+		*new_string_ptr++ = *str_ptr++;
+	*new_string_ptr = '\0';
+	ft_free(str);
+	return (new_string);
 }
 
 char	*join_strings(char **dst, char *src)

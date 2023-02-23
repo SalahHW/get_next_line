@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/22 18:22:52 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/02/23 20:52:58 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,16 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = read_file(fd, &stash);
-	if (!stash)
+	if (!stash || !*stash)
+	{
+		ft_free(&stash);
 		return (NULL);
+	}
+	if (!find_cr(&stash))
+	{
+		line = ft_strdup(&stash);
+		return (line);
+	}
 	line = extract_line(&stash);
 	stash = keep_remainder(&stash);
 	return (line);
@@ -29,8 +37,8 @@ char	*get_next_line(int fd)
 
 char	*read_file(int fd, char **stash)
 {
-	char buffer[BUFFER_SIZE + 1];
-	int	read_state;
+	char	buffer[BUFFER_SIZE + 1];
+	int		read_state;
 
 	read_state = 1;
 	while (read_state > 0)
@@ -51,7 +59,7 @@ char	*read_file(int fd, char **stash)
 		}
 		*stash = join_strings(stash, buffer);
 		if (find_cr(stash))
-			break;
+			break ;
 	}
 	return (*stash);
 }
@@ -63,17 +71,17 @@ char	*extract_line(char **stash)
 	char	*stash_ptr;
 
 	stash_ptr = *stash;
-	while (stash_ptr[-1] != '\n' && *stash_ptr)
+	while (*stash_ptr != '\n' && *stash_ptr)
 		stash_ptr++;
-	line = malloc((sizeof(char) * (stash_ptr - *stash)) + 1);
+	line = malloc((sizeof(char) * (stash_ptr - *stash)) + 2);
 	if (!line)
 		return (ft_free(stash));
-	if (*stash)
-		stash_ptr = *stash;
+	stash_ptr = *stash;
 	line_ptr = line;
-	while (stash_ptr[-1] != '\n' && *stash_ptr)
+	while (*stash_ptr != '\n' && *stash_ptr)
 		*line_ptr++ = *stash_ptr++;
-	*line_ptr = '\0';
+	*line_ptr = '\n';
+	*++line_ptr = '\0';
 	return (line);
 }
 
