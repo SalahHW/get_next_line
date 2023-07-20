@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:51:55 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/23 20:52:58 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/07/21 00:27:06 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ char	*find_cr(char **str);
 char	*read_file(int fd, char **str);
 char	*extract_line(char **str);
 char	*keep_remainder(char **str);
-size_t	ft_strlen(const char *str);
+size_t	get_strlen(const char *str);
 char	*ft_free(char **str);
 #endif
