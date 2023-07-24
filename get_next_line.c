@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:11:31 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/02/23 20:52:58 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/07/24 22:48:02 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_next_line(int fd)
 	}
 	if (!find_cr(&stash))
 	{
-		line = ft_strdup(&stash);
+		line = get_strdup(&stash);
 		return (line);
 	}
 	line = extract_line(&stash);

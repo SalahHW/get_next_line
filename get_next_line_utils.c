@@ -6,7 +6,7 @@
 /*   By: sbouheni <sbouheni@student.42mulhouse.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 03:27:29 by sbouheni          #+#    #+#             */
-/*   Updated: 2023/07/21 00:26:41 by sbouheni         ###   ########.fr       */
+/*   Updated: 2023/07/24 22:47:38 by sbouheni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	get_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup(char **str)
+char	*get_strdup(char **str)
 {
 	char	*new_string;
 	char	*new_string_ptr;
